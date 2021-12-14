@@ -1,9 +1,15 @@
 package com.hbp.finance.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import net.minidev.json.annotate.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="table_employees")
+@JsonAutoDetect
 public class Employee {
     @Id @GeneratedValue
     Integer id;
@@ -11,6 +17,9 @@ public class Employee {
     String role;
     @Column(name ="employee_paycheck")
     Integer employeePaycheck;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "employee")
+    List<Paychecks> paychecks;
 
     public Employee() {
     }
@@ -21,7 +30,15 @@ public class Employee {
         this.employeePaycheck = employeePaycheck;
     }
 
-    public int getId() {
+    public Employee(Integer id, String name, String role, Integer employeePaycheck, List<Paychecks> paychecks) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.employeePaycheck = employeePaycheck;
+        this.paychecks = paychecks;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -51,5 +68,13 @@ public class Employee {
 
     public void setEmployeePaycheck(Integer employeePaycheck) {
         this.employeePaycheck = employeePaycheck;
+    }
+
+    public List<Paychecks> getPaychecks() {
+        return paychecks;
+    }
+
+    public void setPaychecks(List<Paychecks> paychecks) {
+        this.paychecks = paychecks;
     }
 }
